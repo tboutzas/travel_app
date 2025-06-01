@@ -1,109 +1,122 @@
 
+
 <!DOCTYPE html>
 <html lang="el">
 <head>
-    <meta charset="UTF-8">
-    <title>Προσφορές Ταξιδιωτικών Πρακτορείων</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            border: 1px solid #aaa;
-            padding: 10px;
-            text-align: center;
-        }
-        th {
-            background-color: #f0f0f0;
-        }
-        button {
-            padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        button:hover {
-            background-color: #0056b3;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <title>Καταχώριση Προσφοράς Πρακτορείου</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      background: #f7f9fc;
+    }
+
+    h2 {
+      color: #004080;
+    }
+
+    form {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ccc;
+      max-width: 600px;
+    }
+
+    label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+
+    button {
+      background: #0066cc;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #004c99;
+    }
+
+    .success-message {
+      color: green;
+      margin-top: 15px;
+    }
+
+    .error-message {
+      color: red;
+      margin-top: 15px;
+    }
+  </style>
 </head>
 <body>
-    <h2>Σύγκριση Προσφορών Ταξιδιωτικών Πρακτορείων</h2>
-    <table id="offersTable">
-        <thead>
-            <tr>
-                <th>Πρακτορείο</th>
-                <th>Ξενοδοχείο</th>
-                <th>Περιοχή</th>
-                <th>Διατροφή</th>
-                <th>Τιμή (€)</th>
-                <th>Επιλογή</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>TravelFun</td>
-                <td>BlueSea</td>
-                <td>Χαλκιδική</td>
-                <td>Ημιδιατροφή</td>
-                <td>180</td>
-                <td><input type="radio" name="offerChoice"></td>
-            </tr>
-            <tr>
-                <td>ExploreGreece</td>
-                <td>BlueSea</td>
-                <td>Χαλκιδική</td>
-                <td>Πλήρης διατροφή</td>
-                <td>195</td>
-                <td><input type="radio" name="offerChoice"></td>
-            </tr>
-            <tr>
-                <td>HappyTravel</td>
-                <td>SunBay</td>
-                <td>Πάργα</td>
-                <td>Πλήρης διατροφή</td>
-                <td>140</td>
-                <td><input type="radio" name="offerChoice"></td>
-            </tr>
-        </tbody>
-    </table>
 
-    <br>
-    <button onclick="submitChoice()">✅ Υποβολή Επιλογής</button>
-    <div id="result" style="margin-top: 15px; font-weight: bold; color: green;"></div>
+  <h2>Καταχώριση Προσφοράς Πρακτορείου</h2>
 
-    <script>
-        function submitChoice() {
-            const radios = document.getElementsByName("offerChoice");
-            let selectedRow = null;
+  <form id="offerForm">
+    <label for="agency">Όνομα Πρακτορείου:</label>
+    <input type="text" id="agency" name="agency" required />
 
-            for (let i = 0; i < radios.length; i++) {
-                if (radios[i].checked) {
-                    selectedRow = radios[i].parentElement.parentElement;
-                    break;
-                }
-            }
+    <label for="hotel">Όνομα Ξενοδοχείου:</label>
+    <input type="text" id="hotel" name="hotel" required />
 
-            if (!selectedRow) {
-                alert("Παρακαλώ επίλεξε μία προσφορά πρώτα.");
-                return;
-            }
+    <label for="price">Τιμή (€):</label>
+    <input type="number" id="price" name="price" required />
 
-            const cells = selectedRow.getElementsByTagName("td");
-            const agency = cells[0].innerText;
-            const hotel = cells[1].innerText;
-            const location = cells[2].innerText;
-            const meal = cells[3].innerText;
-            const price = cells[4].innerText;
+    <label for="meal">Διατροφή:</label>
+    <select id="meal" name="meal">
+      <option value="Με ημιδιατροφή">Με ημιδιατροφή</option>
+      <option value="Χωρίς ημιδιατροφή">Χωρίς ημιδιατροφή</option>
+    </select>
 
-            const resultText = `Επιλέξατε το πρακτορείο "${agency}" με το ξενοδοχείο "${hotel}" στην ${location} με τιμή ${price}€ (${meal}).`;
+    <button type="submit">Καταχώριση Προσφοράς</button>
 
-            document.getElementById("result").innerText = resultText;
-        }
-    </script>
+    <div id="message"></div>
+  </form>
+
+  <script>
+    document.getElementById("offerForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const data = {
+        agency: document.getElementById("agency").value,
+        hotel: document.getElementById("hotel").value,
+        price: document.getElementById("price").value,
+        meal: document.getElementById("meal").value,
+      };
+
+      fetch("https://script.google.com/macros/s/AKfycby3cdS8hfOHIRtok9J9JQlh4GAe8-zdvpa8gDbWD4bhyTAfUbawMfB31oVtzbasOuQr/exec", {
+        method: "POST",
+        mode: "no-cors", // αλλαγή σε "cors" για debugging
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      })
+      .then(() => {
+        document.getElementById("message").innerHTML =
+          "<p class='success-message'>Η προσφορά καταχωρήθηκε με επιτυχία!</p>";
+        document.getElementById("offerForm").reset();
+      })
+      .catch((error) => {
+        console.error("Σφάλμα:", error);
+        document.getElementById("message").innerHTML =
+          "<p class='error-message'>Σφάλμα καταχώρισης. Δοκιμάστε ξανά.</p>";
+      });
+    });
+  </script>
+
 </body>
 </html>
