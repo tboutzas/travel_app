@@ -98,13 +98,17 @@
     meal: document.getElementById("meal").value,
   };
 
-  fetch("https://script.google.com/macros/s/AKfycbz2FkUTuqC8hVHJUHB5TfPZRHB9A3YkDWXNCQJhPKIilyedQFwXUcrpL_1JqECV_jJU/exec", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
+  fetch("https://script.google.com/macros/s/ΣΤΟΙΧΕΙΑ-URL/exec", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json"
+  },
+  body: JSON.stringify({
+    playerName: "Γιώργος",
+    score: 87
   })
+});
+
   .then((response) => response.json())
   .then((result) => {
     console.log("Αποτέλεσμα:", result); // Για debugging
