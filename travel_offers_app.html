@@ -89,35 +89,37 @@
 
 <script>
   document.getElementById("offerForm").addEventListener("submit", function (e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    const data = {
-      agency: document.getElementById("agency").value,
-      hotel: document.getElementById("hotel").value,
-      price: document.getElementById("price").value,
-      meal: document.getElementById("meal").value,
-    };
+  const data = {
+    agency: document.getElementById("agency").value,
+    hotel: document.getElementById("hotel").value,
+    price: document.getElementById("price").value,
+    meal: document.getElementById("meal").value,
+  };
 
-    fetch("https://script.google.com/macros/s/AKfycbyEEBUytTjvbIRNUdM_jCMmQakgqWTSEJClLNF8zGxMZfffnjDKE6CJxcMyYT-eE_S7/exec", {
-  method: "POST",
-  mode: "no-cors",
-  headers: {
-    "Content-Type": "application/json",
-  },
-  body: JSON.stringify(data),
-})
-.then((response) => response.json())
-.then((result) => {
-  if (result === "success") {
+  fetch("https://script.google.com/macros/s/AKfycbz2FkUTuqC8hVHJUHB5TfPZRHB9A3YkDWXNCQJhPKIilyedQFwXUcrpL_1JqECV_jJU/exec", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+  .then((response) => response.json())
+  .then((result) => {
+    console.log("Αποτέλεσμα:", result); // Για debugging
+
+    if (result.result === "success") {
+      document.getElementById("message").innerHTML =
+        "<p class='success-message'>Η προσφορά καταχωρήθηκε με επιτυχία!</p>";
+      document.getElementById("offerForm").reset();
+    } else {
+      throw new Error(result.message || "Άγνωστο σφάλμα");
+    }
+  })
+  .catch((error) => {
+    console.error("Σφάλμα:", error);
     document.getElementById("message").innerHTML =
-      "<p class='success-message'>Η προσφορά καταχωρήθηκε με επιτυχία!</p>";
-    document.getElementById("offerForm").reset();
-  } else {
-    throw new Error(result.message || "Άγνωστο σφάλμα");
-  }
-})
-.catch((error) => {
-  console.error("Σφάλμα:", error);
-  document.getElementById("message").innerHTML =
-    "<p class='error-message'>Σφάλμα καταχώρισης. Δοκιμάστε ξανά.</p>";
+      "<p class='error-message'>Σφάλμα καταχώρισης. Δοκιμάστε ξανά.</p>";
+  });
 });
